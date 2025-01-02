@@ -59,11 +59,20 @@ function scrapeMedia()
                 // Get all images and add to media array
                 getAllImages().forEach(src =>
                 {
-                    media.push({
-                        type: 'image',
-                        src: src,
-                        filename: src.split('/').pop().split('?')[0] // Remove query parameters from filename
-                    });
+                    // Check if image exists and is accessible
+                    fetch(src, { method: 'HEAD' })
+                        .then(response => {
+                            if (response.ok) {
+                                media.push({
+                                    type: 'image',
+                                    src: src,
+                                    filename: src.split('/').pop().split('?')[0] // Remove query parameters from filename
+                                });
+                            }
+                        })
+                        .catch(() => {
+                            // Skip inaccessible images
+                        });
                 });
 
                 // Collect videos
@@ -71,14 +80,27 @@ function scrapeMedia()
                 {
                     if (video.src && video.src.startsWith('http'))
                     {
-                        media.push({
-                            type: 'video',
-                            src: video.src,
-                            filename: video.src.split('/').pop().split('?')[0] // Remove query parameters from filename
-                        });
+                        // Check if video exists and is accessible
+                        fetch(video.src, { method: 'HEAD' })
+                            .then(response => {
+                                if (response.ok) {
+                                    media.push({
+                                        type: 'video',
+                                        src: video.src,
+                                        filename: video.src.split('/').pop().split('?')[0] // Remove query parameters from filename
+                                    });
+                                }
+                            })
+                            .catch(() => {
+                                // Skip inaccessible videos
+                            });
                     }
                 });
-                return media;
+
+                // Wait for all fetch checks to complete
+                return new Promise(resolve => {
+                    setTimeout(() => resolve(media), 1000);
+                });
             }
         }, displayMedia);
     });
@@ -100,6 +122,9 @@ function displayMedia(results)
         {
             const img = document.createElement('img');
             img.src = item.src;
+            img.onerror = () => {
+                mediaItem.remove(); // Remove if image fails to load
+            };
             mediaItem.appendChild(img);
         }
         else
@@ -107,6 +132,9 @@ function displayMedia(results)
             const video = document.createElement('video');
             video.src = item.src;
             video.controls = true;
+            video.onerror = () => {
+                mediaItem.remove(); // Remove if video fails to load
+            };
             mediaItem.appendChild(video);
         }
 
