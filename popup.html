@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PicPacker</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="container" style="display: flex; flex-direction: column; min-height: 50vh;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
+                <div class="header" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <img src="icon.png" alt="PicPacker Icon" class="app-icon" width="48" height="48">
+                    <h1>PicPacker</h1>
+                </div>
+                <p>Download all images and videos from the current tab</p>
+            </div>
+            <div id="media-grid" class="media-grid rounded" style="flex: 1;"></div>
+            <div class="button-container" style="display: flex; justify-content: space-between; margin-top: auto; padding: 16px 0;">
+                <div>
+                    <button id="clear-all" class="btn">Clear All</button>
+                    <button id="refresh" class="btn">Refresh</button>
+                </div>
+                <div>
+                    <button id="download-selected" class="btn btn-primary">Download Selected</button>
+                </div>
+            </div>
+        </div>
+        <script src="popup.js"></script>
+    </body>
+</html>

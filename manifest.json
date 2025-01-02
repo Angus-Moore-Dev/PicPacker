@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "PicPacker",
+    "version": "1.0",
+    "description": "Scrape and download images and videos from web pages",
+    "author": "Angus Moore",
+    "permissions": [
+        "activeTab",
+        "downloads",
+        "scripting",
+        "webRequest"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "48": "icon.png",
+        "128": "icon.png"
+    }
+}
